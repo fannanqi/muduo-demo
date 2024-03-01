@@ -1,3 +1,11 @@
+<!--
+ * @Author: fannanqi 1773252187@qq.com
+ * @Date: 2024-03-01 22:45:32
+ * @LastEditors: fannanqi 1773252187@qq.com
+ * @LastEditTime: 2024-03-01 22:46:04
+ * @FilePath: /muduo-demo/README.md
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
 # muduo-demo
 
 Implement the Muduo network library
@@ -33,4 +41,16 @@ return:
 
 强调IO的同步和异步
 
-### 数据的读写
+### 数据的读写:同步IO和异步IO
+
+同步IO：
+
+​	用户进程发出IO调用，去获取IO设备数据，双方的数据要经过内核缓冲区同步，完全准备好后，再复制返回到用户进程。 而复制返回到用户进程会导致请求进程阻塞，直到I/O操作完成。
+
+同步IO举例：recv函数 
+
+异步IO:
+
+​	用户进程发出IO调用，去获取IO设备数据，并不需要同步，内核直接复制到进程，整个过程不导致请求进程阻塞。
+
+异步IO举例：recv在读取数据缓存区的同时，将数据cpoy到buff，以及记录signal信号
