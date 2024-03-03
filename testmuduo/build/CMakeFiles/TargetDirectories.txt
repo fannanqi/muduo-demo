@@ -1,0 +1,3 @@
+/home/fannanqi/muduo-demo/testmuduo/build/CMakeFiles/muduo-demo.dir
+/home/fannanqi/muduo-demo/testmuduo/build/CMakeFiles/edit_cache.dir
+/home/fannanqi/muduo-demo/testmuduo/build/CMakeFiles/rebuild_cache.dir

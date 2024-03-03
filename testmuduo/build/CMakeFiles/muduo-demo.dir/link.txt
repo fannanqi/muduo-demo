@@ -1,0 +1,1 @@
+/usr/bin/c++ "CMakeFiles/muduo-demo.dir/muduo-server.cc.o" -o muduo-demo  -lmuduo_net -lmuduo_base -lpthread 
