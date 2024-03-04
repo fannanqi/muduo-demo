@@ -1,3 +1,12 @@
+/*
+ * @Author: fannanqi 1773252187@qq.com
+ * @Date: 2024-03-04 08:30:17
+ * @LastEditors: fannanqi 1773252187@qq.com
+ * @LastEditTime: 2024-03-04 08:45:08
+ * @FilePath: /muduo-demo/testmuduo/muduo-server.cc
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
+#ifdef _linux
 #include "muduo-server.h"
 
 void ChatServer::onConnection(const net::TcpConnectionPtr &conn)
@@ -58,3 +67,5 @@ int main(void)
     loop.loop();     //  epoll_wait以阻塞方式等待新用户连接，已连接用户的读写事件
     return 0;
 }
+#elif __APPLE__
+#endif

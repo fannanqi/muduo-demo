@@ -2,12 +2,13 @@
  * @Author: fannanqi 1773252187@qq.com
  * @Date: 2024-03-02 18:38:43
  * @LastEditors: fannanqi 1773252187@qq.com
- * @LastEditTime: 2024-03-03 14:01:05
+ * @LastEditTime: 2024-03-04 08:40:05
  * @FilePath: /muduo-demo/testmuduo/muduo-server.h
  * @Description:基于muduo网络库实现服务端开发示例
  *
  * Copyright (c) 2024 by ${git_name_email}, All Rights Reserved.
  */
+#ifdef _linux_
 #include <muduo/net/EventLoop.h>
 #include <muduo/net/TcpServer.h>
 #include <iostream>
@@ -44,3 +45,5 @@ public:
     void start();
     ~ChatServer();
 };
+#elif __APPLE__
+#endif

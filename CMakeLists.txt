@@ -13,5 +13,5 @@ link_directories(
     ${PROJECT_SOURCE_DIR}/lib
 )
 add_subdirectory(muduo-tool)
-add_subdirectory(testmuduo)
+add_subdirectory(test)
 add_subdirectory(net)

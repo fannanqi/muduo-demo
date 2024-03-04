@@ -21,7 +21,7 @@ Logger::Logger()
             char file_name[128];
             // 这是一个存储文件(夹)信息的结构体，其中有文件大小和创建时间、访问时间、修改时间等
 	        struct stat statbuf;
-            sprintf(file_name,"%d-%d-%d-log.txt",_nowtime->tm_year+1900,_nowtime->tm_mon+1,_nowtime->tm_mday);
+            snprintf(file_name,128,"%d-%d-%d-log.txt",_nowtime->tm_year+1900,_nowtime->tm_mon+1,_nowtime->tm_mday);
             
             //  与当前日期不相同，直接赋值
             if (_logfiletm.tm_year!=_nowtime->tm_year+1900)
@@ -46,7 +46,7 @@ Logger::Logger()
                 size_t filesize = statbuf.st_size;
                 if(filesize>=20*1048576)
                 {
-                    sprintf(file_name,"%d-%d-%d-%d-log.txt",_nowtime->tm_yday+1900,_nowtime->tm_mon+1,_nowtime->tm_mday,_nowtime->tm_hour);
+                    snprintf(file_name,128,"%d-%d-%d-%d-log.txt",_nowtime->tm_yday+1900,_nowtime->tm_mon+1,_nowtime->tm_mday,_nowtime->tm_hour);
                 }
 
             }
@@ -103,7 +103,7 @@ void Logger::SetLogLevel(LogLevel level)
     _mloglevel = level;
 }
 
-void Logger::Log(std::string msg)
+void Logger::Log(std::string msg_mlckQue)
 {
     _mlckQue.Push(msg);
     std::this_thread::sleep_for(std::chrono::milliseconds(70));

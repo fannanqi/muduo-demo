@@ -8,7 +8,7 @@
 	"installers" : [],
 	"paths" : 
 	{
-		"build" : "muduo-tool/test",
-		"source" : "muduo-tool/test"
+		"build" : "test",
+		"source" : "test"
 	}
 }

@@ -7,16 +7,6 @@
  *
  * Copyright (c) 2024 by ${git_name_email}, All Rights Reserved.
  */
-/*
- * @Author: fannanqi 1773252187@qq.com
- * @Date: 2024-03-03 21:27:31
- * @LastEditors: fannanqi 1773252187@qq.com
- * @LastEditTime: 2024-03-03 21:29:10
- * @FilePath: /muduo-demo/net/InetAddress.h
- * @Description:
- *
- * Copyright (c) 2024 by ${git_name_email}, All Rights Reserved.
- */
 #pragma once
 #include <sys/socket.h>
 #include <netinet/in.h>
