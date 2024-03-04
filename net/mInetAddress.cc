@@ -2,7 +2,7 @@
  * @Author: fannanqi 1773252187@qq.com
  * @Date: 2024-03-04 08:30:17
  * @LastEditors: fannanqi 1773252187@qq.com
- * @LastEditTime: 2024-03-04 09:05:22
+ * @LastEditTime: 2024-03-04 21:50:02
  * @FilePath: /muduo-demo/net/mInetAddress.cc
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -12,7 +12,7 @@
 using namespace mmuduo;
 using namespace mnet;
 
-mmuduo::mnet::mInetAddress::mInetAddress(uint16_t port, std::string ip, bool isIvp6)
+mInetAddress::mInetAddress(uint16_t port, std::string ip, bool isIvp6)
 {
     this->_ip = ip;
     this->_port = std::to_string(port);
@@ -38,7 +38,7 @@ mmuduo::mnet::mInetAddress::mInetAddress(uint16_t port, std::string ip, bool isI
     addr_.sin_port = htons(port);
 }
 
-mmuduo::mnet::mInetAddress::mInetAddress(const sockaddr_in &addr)
+mInetAddress::mInetAddress(const sockaddr_in &addr)
 {
     char paresIp[32] = {0};
     if (inet_ntop(AF_INET, &addr, paresIp, sizeof(addr)) == NULL)
@@ -49,7 +49,7 @@ mmuduo::mnet::mInetAddress::mInetAddress(const sockaddr_in &addr)
     this->_ip = htons(addr.sin_port);
 }
 
-mmuduo::mnet::mInetAddress::mInetAddress(const sockaddr_in6 &addr)
+mInetAddress::mInetAddress(const sockaddr_in6 &addr)
 {
     char paresIp[128] = {0};
     if (inet_ntop(AF_INET6, &addr, paresIp, sizeof(addr)) == NULL)
@@ -60,26 +60,26 @@ mmuduo::mnet::mInetAddress::mInetAddress(const sockaddr_in6 &addr)
     this->_ip = htons(addr.sin6_port);
 }
 
-std::string mmuduo::mnet::mInetAddress::toIp() const
+std::string mInetAddress::toIp() const
 {
     return _ip;
 }
 
-std::string mmuduo::mnet::mInetAddress::toIpPort() const
+std::string mInetAddress::toIpPort() const
 {
     return _ip + ":" + _port;
 }
 
-std::string mmuduo::mnet::mInetAddress::toPort() const
+std::string mInetAddress::toPort() const
 {
     return _port;
 }
 
-const sockaddr_in *mmuduo::mnet::mInetAddress::getSockAddr() const
+const sockaddr_in *mInetAddress::getSockAddr() const
 {
     return &addr_;
 }
 
-mmuduo::mnet::mInetAddress::~mInetAddress()
+mInetAddress::~mInetAddress()
 {
 }

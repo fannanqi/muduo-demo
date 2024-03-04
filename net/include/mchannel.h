@@ -2,14 +2,14 @@
  * @Author: fannanqi 1773252187@qq.com
  * @Date: 2024-03-04 13:29:54
  * @LastEditors: fannanqi 1773252187@qq.com
- * @LastEditTime: 2024-03-04 15:33:06
- * @FilePath: /muduo-demo/net/mchannel.h
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ * @LastEditTime: 2024-03-04 23:39:11
+ * @FilePath: /muduo-demo/net/include/mchannel.h
+ * @Description: 事件处理器，封装fd和event
  */
 #pragma once
-#include <iostream>
+#include <functional>
 #include <mnocopyable.h>
-
+#include <memory>
 class mEventLoop;
 class Timestamp;
 namespace mmuduo
@@ -19,6 +19,7 @@ namespace mmuduo
         /**
             mChannel为隧道，封装了sockfd和其感兴趣的event，如EPOLLIN、EPOLLOUT
             还绑定了poller返回的具体事件
+            EventLoop包含Channel，channel包含fd，events(如EPOLL_IN、EPOLL_OUT)
         */
         class mChannel : mnocopyable
         {
@@ -28,6 +29,62 @@ namespace mmuduo
 
             mChannel(mEventLoop *loop, int fd);
             void handleEvent(Timestamp receiveTime);
+
+            //  设置回调函数对象
+            void setReadCallback(ReadEventCallback cb);
+            void setWriteCallback(EventCallback cb);
+            void setCloseCallback(EventCallback cb);
+            void setErrorCallback(EventCallback cb);
+
+            //  防止当channel被手动remove掉，channel还在执行回调操作
+            void tie(const std::shared_ptr<void> &);
+
+            int fd() const { return _fd; }
+            int set_revents(int revt) { _revents = revt; }
+            bool isNoneEvent() const
+            {
+                return _revents == KNoneEvent;
+            }
+
+            void enableReading()
+            {
+                _events |= KReadEvent;
+                update();
+            }
+            //  ~KReadEvent取反，并使能
+            void disableReading()
+            {
+                _events &= ~KReadEvent;
+                update();
+            }
+            void enableWriting()
+            {
+                _events |= KReadEvent;
+                update();
+            }
+            void disableWriting()
+            {
+                _events &= ~KWriteEvent;
+                update();
+            }
+            void disableAll()
+            {
+                _events = KNoneEvent;
+                update();
+            }
+
+            //  返回fd当前事件的状态
+            bool isNoneEvent() const { return _events == KNoneEvent; }
+            bool isReading() const { return _events & KReadEvent; }
+            bool isWriting() const { return _events & KWriteEvent; }
+
+            //  Poller的index
+            int index() { return _index; }
+            void setIndex(int idx) { _index = idx; }
+
+            //  one loop per thread
+            mEventLoop *ownerLoop() { return _loop; }
+            void remove();
             ~mChannel();
 
         private:
@@ -40,7 +97,17 @@ namespace mmuduo
             const int _fd;     //  _fd,Poller监听对象
             int _events;       //  注册_fd的事件
             int _revents;      //  Poller返回的具体发生事件
-        };
+            int _index;
+            std::weak_ptr<void> _tie;
+            bool _tied;
 
+            //  因为channel通道里面能获知fd最终发生的具体的事件revents，所以负责调用具体事件的回调操作
+            ReadEventCallback _readCallback;
+            EventCallback _writeCallback;
+            EventCallback _closeCallback;
+            EventCallback _errorCallback;
+
+            void update();
+        };
     }
 }

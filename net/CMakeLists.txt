@@ -6,6 +6,9 @@ include_directories(
 )
 set(SOURCES
     mInetAddress.cc
+    mchannel.cc
+    mEventLoop.cc
+    mTcpServer.cc
 )
 
 add_library(net ${SOURCES})

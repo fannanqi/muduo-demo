@@ -3,7 +3,7 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "/Users/apple/Desktop/work/muduo-demo/lib/libnet.a"
+			"path" : "/home/fannanqi/muduo-demo/lib/libnet.a"
 		}
 	],
 	"backtrace" : 1,
@@ -28,13 +28,13 @@
 			{
 				"command" : 0,
 				"file" : 0,
-				"line" : 11,
+				"line" : 14,
 				"parent" : 0
 			},
 			{
 				"command" : 1,
 				"file" : 0,
-				"line" : 12,
+				"line" : 15,
 				"parent" : 0
 			},
 			{
@@ -60,22 +60,22 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "-std=gnu++11 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.2.sdk"
+					"fragment" : "-g -std=gnu++11"
 				}
 			],
 			"includes" : 
 			[
 				{
 					"backtrace" : 4,
-					"path" : "/Users/apple/Desktop/work/muduo-demo/muduo-tool/include"
+					"path" : "/home/fannanqi/muduo-demo/muduo-tool/include"
 				},
 				{
 					"backtrace" : 4,
-					"path" : "/Users/apple/Desktop/work/muduo-demo/net/include"
+					"path" : "/home/fannanqi/muduo-demo/net/include"
 				},
 				{
 					"backtrace" : 5,
-					"path" : "/Users/apple/Desktop/work/muduo-demo/net/./include"
+					"path" : "/home/fannanqi/muduo-demo/net/./include"
 				}
 			],
 			"language" : "CXX",
@@ -89,7 +89,10 @@
 			},
 			"sourceIndexes" : 
 			[
-				0
+				0,
+				1,
+				2,
+				3
 			]
 		}
 	],
@@ -114,7 +117,10 @@
 			"name" : "Source Files",
 			"sourceIndexes" : 
 			[
-				0
+				0,
+				1,
+				2,
+				3
 			]
 		}
 	],
@@ -124,6 +130,24 @@
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
 			"path" : "net/mInetAddress.cc",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "net/mchannel.cc",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "net/mEventLoop.cc",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "net/mTcpServer.cc",
 			"sourceGroupIndex" : 0
 		}
 	],
