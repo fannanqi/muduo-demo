@@ -2,7 +2,7 @@
  * @Author: fannanqi 1773252187@qq.com
  * @Date: 2024-03-04 13:29:54
  * @LastEditors: fannanqi 1773252187@qq.com
- * @LastEditTime: 2024-03-04 23:39:11
+ * @LastEditTime: 2024-03-05 16:44:30
  * @FilePath: /muduo-demo/net/include/mchannel.h
  * @Description: 事件处理器，封装fd和event
  */
@@ -93,12 +93,12 @@ namespace mmuduo
             static const int KReadEvent;
             static const int KWriteEvent;
 
-            mEventLoop *_loop; //  表示当前事件循环
+            mEventLoop *_loop; //  表示当前事件循环,因为EeventLoop(作为事件分发器，添加event事件),所以需要_loop指针对事件的增删
             const int _fd;     //  _fd,Poller监听对象
             int _events;       //  注册_fd的事件
             int _revents;      //  Poller返回的具体发生事件
             int _index;
-            std::weak_ptr<void> _tie;
+            std::weak_ptr<void> _tie; //  观察者，观察强智能指针
             bool _tied;
 
             //  因为channel通道里面能获知fd最终发生的具体的事件revents，所以负责调用具体事件的回调操作
@@ -107,6 +107,7 @@ namespace mmuduo
             EventCallback _closeCallback;
             EventCallback _errorCallback;
 
+            //  当改变channel所表示fd的events事件后，update负责在poller里面改变fd相应的事件epoll_ctl、kevent
             void update();
         };
     }
