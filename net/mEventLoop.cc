@@ -8,7 +8,7 @@
  */
 #include "mEventLoop.h"
 using namespace mmuduo;
-using namespace mnet;
+using namespace mmuduo::mnet;
 mEventLoop::mEventLoop()
 {
 }

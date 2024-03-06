@@ -10,7 +10,7 @@
 #include <logger.h>
 #include <errno.h>
 using namespace mmuduo;
-using namespace mnet;
+using namespace mmuduo::mnet;
 
 mInetAddress::mInetAddress(uint16_t port, std::string ip, bool isIvp6)
 {

@@ -2,7 +2,7 @@
  * @Author: fannanqi 1773252187@qq.com
  * @Date: 2024-03-04 13:29:54
  * @LastEditors: fannanqi 1773252187@qq.com
- * @LastEditTime: 2024-03-06 19:24:20
+ * @LastEditTime: 2024-03-06 20:22:37
  * @FilePath: /muduo-demo/net/include/mchannel.h
  * @Description: 事件处理器，封装fd和event(Demultiplex)
  */
@@ -10,12 +10,14 @@
 #include <functional>
 #include <mnocopyable.h>
 #include <memory>
-class mEventLoop;
+//  Timestamp不再namespace作用域范围内
 class Timestamp;
 namespace mmuduo
 {
     namespace mnet
     {
+        //  mEventLoop在mmuduo和mnet的作用域范围内
+        class mEventLoop;
         /**
             mChannel为隧道，封装了sockfd和其感兴趣的event，如EPOLLIN、EPOLLOUT
             还绑定了poller返回的具体事件
@@ -28,7 +30,6 @@ namespace mmuduo
             using ReadEventCallback = std::function<void(Timestamp)>;
 
             mChannel(mEventLoop *loop, int fd);
-
             //  fd得到poller通知以后，处理事件的
             void handleEvent(Timestamp receiveTime);
 

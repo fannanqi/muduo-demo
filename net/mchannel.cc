@@ -2,7 +2,7 @@
  * @Author: fannanqi 1773252187@qq.com
  * @Date: 2024-03-04 17:46:48
  * @LastEditors: fannanqi 1773252187@qq.com
- * @LastEditTime: 2024-03-06 19:30:25
+ * @LastEditTime: 2024-03-06 20:20:14
  * @FilePath: /muduo-demo/net/mchannel.cc
  * @Description:
  *
@@ -20,9 +20,19 @@
 #include <sys/event.h>
 #include <sys/types.h>
 #endif
-using namespace mmuduo;
-using namespace mnet;
 
+using namespace mmuduo;
+using namespace mmuduo::mnet;
+
+mChannel::mChannel(mEventLoop *loop, int fd)
+    : _loop(loop),
+      _fd(fd),
+      _events(0),
+      _revents(0),
+      _index(-1),
+      _tied(false)
+{
+}
 void mChannel::setReadCallback(ReadEventCallback cb)
 {
     _readCallback = std::move(cb);
@@ -63,15 +73,7 @@ void mChannel::update()
 {
     //_loop->updateChannel(this);
 }
-mmuduo::mnet::mChannel::mChannel(mEventLoop *loop, int fd)
-    : _loop(loop),
-      _fd(fd),
-      _events(0),
-      _revents(0),
-      _index(-1),
-      _tied(false)
-{
-}
+
 void mChannel::handleEvent(Timestamp receiveTime)
 {
     if (_tied)
@@ -109,7 +111,7 @@ void mChannel::handleEventWithGuard(Timestamp receiveTime)
     if (_revents & EPOLLOUT)
     {
         if (_writeCallback)
-            _writeCallback()
+            _writeCallback();
     }
     _eventHandling = false;
 #elif __ubuntu__
