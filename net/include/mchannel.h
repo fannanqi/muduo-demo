@@ -2,7 +2,7 @@
  * @Author: fannanqi 1773252187@qq.com
  * @Date: 2024-03-04 13:29:54
  * @LastEditors: fannanqi 1773252187@qq.com
- * @LastEditTime: 2024-03-06 20:22:37
+ * @LastEditTime: 2024-03-06 20:42:01
  * @FilePath: /muduo-demo/net/include/mchannel.h
  * @Description: 事件处理器，封装fd和event(Demultiplex)
  */
@@ -23,7 +23,7 @@ namespace mmuduo
             还绑定了poller返回的具体事件
             EventLoop包含Channel，channel包含fd，events(如EPOLL_IN、EPOLL_OUT)
         */
-        class mChannel : mnocopyable
+        class mChannel : public mnocopyable
         {
         public:
             using EventCallback = std::function<void()>;
