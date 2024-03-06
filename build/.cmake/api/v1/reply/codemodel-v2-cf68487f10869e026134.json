@@ -120,21 +120,21 @@
 				{
 					"directoryIndex" : 1,
 					"id" : "muduo-tool::@444cf9893025182dcec9",
-					"jsonFile" : "target-muduo-tool-Debug-6d94e63b5f4f8b623f48.json",
+					"jsonFile" : "target-muduo-tool-Debug-5a2990fadb41ce4582fb.json",
 					"name" : "muduo-tool",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 5,
 					"id" : "net::@9c2d6179807f9007d92d",
-					"jsonFile" : "target-net-Debug-835201af0539afaacadf.json",
+					"jsonFile" : "target-net-Debug-c568177dee27ab679e5b.json",
 					"name" : "net",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 4,
 					"id" : "test::@36f028580bb02cc8272a",
-					"jsonFile" : "target-test-Debug-5e553a1fcf95c03c1c7b.json",
+					"jsonFile" : "target-test-Debug-c6000f37a13506f4fbbd.json",
 					"name" : "test",
 					"projectIndex" : 0
 				}
@@ -144,8 +144,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "/home/fannanqi/muduo-demo/build",
-		"source" : "/home/fannanqi/muduo-demo"
+		"build" : "/Users/apple/Desktop/work/muduo-demo/build",
+		"source" : "/Users/apple/Desktop/work/muduo-demo"
 	},
 	"version" : 
 	{

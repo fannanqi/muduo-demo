@@ -2,9 +2,9 @@
  * @Author: fannanqi 1773252187@qq.com
  * @Date: 2024-03-04 13:29:54
  * @LastEditors: fannanqi 1773252187@qq.com
- * @LastEditTime: 2024-03-05 16:44:30
+ * @LastEditTime: 2024-03-06 19:24:20
  * @FilePath: /muduo-demo/net/include/mchannel.h
- * @Description: 事件处理器，封装fd和event
+ * @Description: 事件处理器，封装fd和event(Demultiplex)
  */
 #pragma once
 #include <functional>
@@ -28,6 +28,8 @@ namespace mmuduo
             using ReadEventCallback = std::function<void(Timestamp)>;
 
             mChannel(mEventLoop *loop, int fd);
+
+            //  fd得到poller通知以后，处理事件的
             void handleEvent(Timestamp receiveTime);
 
             //  设置回调函数对象
@@ -40,11 +42,7 @@ namespace mmuduo
             void tie(const std::shared_ptr<void> &);
 
             int fd() const { return _fd; }
-            int set_revents(int revt) { _revents = revt; }
-            bool isNoneEvent() const
-            {
-                return _revents == KNoneEvent;
-            }
+            void set_revents(int revt) { _revents = revt; }
 
             void enableReading()
             {
@@ -84,6 +82,8 @@ namespace mmuduo
 
             //  one loop per thread
             mEventLoop *ownerLoop() { return _loop; }
+
+            //  在Channel所属的EventLoop,当前的channel删除掉
             void remove();
             ~mChannel();
 
@@ -100,7 +100,7 @@ namespace mmuduo
             int _index;
             std::weak_ptr<void> _tie; //  观察者，观察强智能指针
             bool _tied;
-
+            bool _eventHandling; // 是否在执行handler事件
             //  因为channel通道里面能获知fd最终发生的具体的事件revents，所以负责调用具体事件的回调操作
             ReadEventCallback _readCallback;
             EventCallback _writeCallback;
@@ -109,6 +109,8 @@ namespace mmuduo
 
             //  当改变channel所表示fd的events事件后，update负责在poller里面改变fd相应的事件epoll_ctl、kevent
             void update();
+            //  处理事件的回调操作
+            void handleEventWithGuard(Timestamp receiveTime);
         };
     }
 }

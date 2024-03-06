@@ -103,7 +103,7 @@ void Logger::SetLogLevel(LogLevel level)
     _mloglevel = level;
 }
 
-void Logger::Log(std::string msg_mlckQue)
+void Logger::Log(std::string msg)
 {
     _mlckQue.Push(msg);
     std::this_thread::sleep_for(std::chrono::milliseconds(70));
