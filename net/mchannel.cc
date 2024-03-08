@@ -2,7 +2,7 @@
  * @Author: fannanqi 1773252187@qq.com
  * @Date: 2024-03-04 17:46:48
  * @LastEditors: fannanqi 1773252187@qq.com
- * @LastEditTime: 2024-03-06 20:20:14
+ * @LastEditTime: 2024-03-08 14:49:30
  * @FilePath: /muduo-demo/net/mchannel.cc
  * @Description:
  *
@@ -12,13 +12,14 @@
 #include <mEventLoop.h>
 #include <mTimestamp.h>
 #include <logger.h>
-#ifdef __unix__
-#include <sys/epoll.h>
-#elif __linux__
+#ifdef __linux__
 #include <sys/epoll.h>
 #elif __APPLE__
 #include <sys/event.h>
 #include <sys/types.h>
+#else
+#include <sys/epoll.h>
+#include <sys/poll.h>
 #endif
 
 using namespace mmuduo;

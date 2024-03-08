@@ -2,7 +2,7 @@
  * @Author: fannanqi 1773252187@qq.com
  * @Date: 2024-03-06 23:21:12
  * @LastEditors: fannanqi 1773252187@qq.com
- * @LastEditTime: 2024-03-07 08:13:04
+ * @LastEditTime: 2024-03-08 08:57:43
  * @FilePath: /muduo-demo/net/include/mPoll.h
  * @Description:muduo库中多路事件分发器的核心IO复用模块
  *
@@ -23,6 +23,7 @@ namespace mmuduo
         class mPoll : public mnocopyable
         {
         private:
+            //  定义Poller所属的事件循环EventLoop
             mEventLoop *_ownerLoop;
 
         protected:

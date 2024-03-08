@@ -131,7 +131,13 @@ Reactor 多线程模型将业务逻辑交给多个线程进行处理。除此之
 
 ## 多路 IO 复用模型
 
+[IO复用之select、poll、epoll模型](https://zhuanlan.zhihu.com/p/126278747)
+
+### 什么是多路IO复用
+IO多路复用（IO Multiplexing）一种同步IO模型，单个进程/线程就可以同时处理多个IO请求。一个进程/线程可以监视多个文件句柄；一旦某个文件句柄就绪，就能够通知应用程序进行相应的读写操作；没有文件句柄就绪时会阻塞应用程序，交出cpu。多路是指网络连接，复用指的是同一个进程/线程
+
 数据准备阶段由内核准备好，再由应用层读取数据
+
 
 ### select
 
@@ -147,3 +153,9 @@ Reactor 多线程模型将业务逻辑交给多个线程进行处理。除此之
 优点:
 没有 1024 的限制
 请求返回
+
+### epoll
+
+关于epoll_create:
+对于epoll_create1 的flag参数: 可以设置为0 或EPOLL_CLOEXEC，为0时函数表现与epoll_create一致, EPOLL_CLOEXEC标志与open 时的O_CLOEXEC 标志类似，即进程被替换时会关闭打开的文件描述符(需要注意的是，epoll_create与epoll_create1当创建好epoll句柄后，它就是会占用一个fd值，在linux下如果查看/proc/<pid>/fd/，是能够看到这个fd的，所以在使用完epoll后，必须调用close()关闭，否则可能导致fd被耗尽)。
+
