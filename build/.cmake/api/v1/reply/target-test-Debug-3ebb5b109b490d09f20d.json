@@ -2,7 +2,7 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "/Users/apple/Desktop/work/muduo-demo/bin/test"
+			"path" : "/home/fannanqi/muduo-demo/bin/test"
 		}
 	],
 	"backtrace" : 1,
@@ -80,18 +80,18 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "-g -std=gnu++11 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.2.sdk"
+					"fragment" : "-g -std=gnu++11"
 				}
 			],
 			"includes" : 
 			[
 				{
 					"backtrace" : 9,
-					"path" : "/Users/apple/Desktop/work/muduo-demo/muduo-tool/include"
+					"path" : "/home/fannanqi/muduo-demo/muduo-tool/include"
 				},
 				{
 					"backtrace" : 9,
-					"path" : "/Users/apple/Desktop/work/muduo-demo/net/include"
+					"path" : "/home/fannanqi/muduo-demo/net/include"
 				}
 			],
 			"language" : "CXX",
@@ -135,21 +135,21 @@
 			},
 			{
 				"backtrace" : 3,
-				"fragment" : "-L/Users/apple/Desktop/work/muduo-demo/lib",
+				"fragment" : "-L/home/fannanqi/muduo-demo/lib",
 				"role" : "libraryPath"
 			},
 			{
-				"fragment" : "-Wl,-rpath,/Users/apple/Desktop/work/muduo-demo/lib",
+				"fragment" : "-Wl,-rpath,/home/fannanqi/muduo-demo/lib",
 				"role" : "libraries"
 			},
 			{
 				"backtrace" : 4,
-				"fragment" : "/Users/apple/Desktop/work/muduo-demo/lib/libnet.a",
+				"fragment" : "/home/fannanqi/muduo-demo/lib/libnet.a",
 				"role" : "libraries"
 			},
 			{
 				"backtrace" : 6,
-				"fragment" : "/Users/apple/Desktop/work/muduo-demo/lib/libmuduo-tool.dylib",
+				"fragment" : "/home/fannanqi/muduo-demo/lib/libmuduo-tool.so",
 				"role" : "libraries"
 			},
 			{

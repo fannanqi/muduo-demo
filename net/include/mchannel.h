@@ -2,7 +2,7 @@
  * @Author: fannanqi 1773252187@qq.com
  * @Date: 2024-03-04 13:29:54
  * @LastEditors: fannanqi 1773252187@qq.com
- * @LastEditTime: 2024-03-06 20:42:01
+ * @LastEditTime: 2024-03-10 16:12:05
  * @FilePath: /muduo-demo/net/include/mchannel.h
  * @Description: 事件处理器，封装fd和event(Demultiplex)
  */
@@ -41,9 +41,17 @@ namespace mmuduo
 
             //  防止当channel被手动remove掉，channel还在执行回调操作
             void tie(const std::shared_ptr<void> &);
-
+            //  返回_fd
             int fd() const { return _fd; }
+            //  返回channel在Poller的状态
+            int index() const { return _index; }
+            //  返回channel当前_events的状态
+            int events() const { return _events; }
+            //  返回channel所属的EventLoop  (one loop per thread)
+            mEventLoop *ownerLoop() const { return _loop; }
+
             void set_revents(int revt) { _revents = revt; }
+            void setIndex(int idx) { _index = idx; }
 
             void enableReading()
             {
@@ -76,13 +84,6 @@ namespace mmuduo
             bool isNoneEvent() const { return _events == KNoneEvent; }
             bool isReading() const { return _events & KReadEvent; }
             bool isWriting() const { return _events & KWriteEvent; }
-
-            //  Poller的index
-            int index() { return _index; }
-            void setIndex(int idx) { _index = idx; }
-
-            //  one loop per thread
-            mEventLoop *ownerLoop() { return _loop; }
 
             //  在Channel所属的EventLoop,当前的channel删除掉
             void remove();

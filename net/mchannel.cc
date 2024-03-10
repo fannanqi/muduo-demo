@@ -2,7 +2,7 @@
  * @Author: fannanqi 1773252187@qq.com
  * @Date: 2024-03-04 17:46:48
  * @LastEditors: fannanqi 1773252187@qq.com
- * @LastEditTime: 2024-03-08 14:49:30
+ * @LastEditTime: 2024-03-10 22:02:59
  * @FilePath: /muduo-demo/net/mchannel.cc
  * @Description:
  *
@@ -115,7 +115,27 @@ void mChannel::handleEventWithGuard(Timestamp receiveTime)
             _writeCallback();
     }
     _eventHandling = false;
-#elif __ubuntu__
+
+#elif __APPLE__
+    if (_revents & (!EVFILT_READ))
+        //  断开连接
+        if (_closeCallback)
+            _closeCallback();
+    if (_revents & EV_ERROR)
+        if (_closeCallback)
+            _closeCallback();
+    if (_revents & EVFILT_READ)
+    {
+        if (_readCallback)
+            _readCallback(receiveTime);
+    }
+    if (_revents & EVFILT_WRITE)
+    {
+        if (_writeCallback)
+            _writeCallback();
+    }
+    _eventHandling = false;
+#else
     //  EPOLLHUP表示读和写都关闭状态, 对端读关闭
     if ((_revents & EPOLLHUP) && !(_revents & EPOLLIN))
     {
@@ -138,25 +158,6 @@ void mChannel::handleEventWithGuard(Timestamp receiveTime)
     {
         if (_writeCallback)
             _writeCallback()
-    }
-    _eventHandling = false;
-#elif __APPLE__
-    if (_revents & (!EVFILT_READ))
-        //  断开连接
-        if (_closeCallback)
-            _closeCallback();
-    if (_revents & EV_ERROR)
-        if (_closeCallback)
-            _closeCallback();
-    if (_revents & EVFILT_READ)
-    {
-        if (_readCallback)
-            _readCallback(receiveTime);
-    }
-    if (_revents & EVFILT_WRITE)
-    {
-        if (_writeCallback)
-            _writeCallback();
     }
     _eventHandling = false;
 #endif

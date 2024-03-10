@@ -13,22 +13,17 @@ using namespace mmuduo;
 using namespace mmuduo::mnet;
 mPoll *mPoll::newDefaultPoler(mEventLoop *loop)
 {
-    if (std::getenv("MUDUO_USE_POLL"))
-    {
-        //  生成poll的实例
-        LOG_INFO("USING EPOLL");
-        return nullptr;
-    }
-    else if (std::getenv("MUDUO_USE_KQUEUE"))
-    {
-        //  生成kqueue的实例
-        LOG_INFO("USING KQUEUE");
-        return nullptr;
-    }
-    else
-    {
-        //  生成epoll的实例
-        LOG_INFO("USING POLL");
-        return nullptr;
-    }
+#ifdef __linux__
+    //  生成epoll的实例
+    LOG_INFO("USING EPOLL");
+    return nullptr;
+#elif __APPLE__
+    //  生成kqueue的实例
+    LOG_INFO("USING KQUEUE");
+    return nullptr;
+#else
+    //  生成epoll的实例
+    LOG_INFO("USING POLL");
+    return nullptr;
+#endif
 }

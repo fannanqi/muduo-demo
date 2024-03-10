@@ -2,13 +2,14 @@
  * @Author: fannanqi 1773252187@qq.com
  * @Date: 2024-03-01 13:46:49
  * @LastEditors: fannanqi 1773252187@qq.com
- * @LastEditTime: 2024-03-04 09:12:54
- * @FilePath: /muduo-demo/muduo-tool/log/include/logger.h
+ * @LastEditTime: 2024-03-10 21:42:14
+ * @FilePath: /muduo-demo/muduo-tool/include/logger.h
  * @Description: 日志系统
  */
 #pragma once
 #include "lockqueue.h"
 #include <string>
+#include <string.h>
 
 extern std::mutex _loggerMutex;   // 宏定义函数锁的互斥量
 extern std::mutex _instanceMutex; // 宏定义函数锁的互斥量
@@ -89,6 +90,7 @@ public:
         snprintf(c, 1024, logmsgformat, ##__VA_ARGS__); \
         logger->Log(c);                                 \
         _loggerMutex.unlock();                          \
+        exit(-1);                                       \
     } while (0);
 #ifdef MUDEBUG
 #define LOG_DEBUG(logmsgformat, ...)                    \
