@@ -2,17 +2,19 @@
  * @Author: fannanqi 1773252187@qq.com
  * @Date: 2024-03-08 13:53:09
  * @LastEditors: fannanqi 1773252187@qq.com
- * @LastEditTime: 2024-03-11 00:13:40
+ * @LastEditTime: 2024-03-11 16:14:43
  * @FilePath: /muduo-demo/net/mEpollPoller.cc
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ * @Description: 这里进行channnel的状态的改变，epoll_ctl、EV_SET操作
  */
 #include "mEpollPoller.h"
 #include <mEventLoop.h>
 #include <mchannel.h>
 #include <logger.h>
+#include <mTimestamp.h>
 #include <errno.h>
 #include <unistd.h>
-
+#include <time.h>
+#define MUDEBUG
 using namespace mmuduo;
 using namespace mmuduo::mnet;
 using namespace std;
@@ -49,6 +51,23 @@ mEpollPoller::mEpollPoller(mEventLoop *loop)
 {
 }
 #endif
+void mEpollPoller::fillActiveChannels(int numEvents, ChannelList *activeChannels) const
+{
+    for (int i = 0; i < numEvents; i++)
+    {
+#ifdef __linux__
+        mChannel *channel = static_cast<mChannel *>(events_[i].data.ptr);
+        channel->set_revents(events_[i].events);
+#elif __APPLE__
+        mChannel *channel = static_cast<mChannel *>(events_[i].udata);
+        channel->set_revents(events_[i].filter);
+#else
+        mChannel *channel = static_cast<mChannel *>(events_[i].data.ptr);
+        channel->set_revents(events_[i].events);
+#endif
+        activeChannels->push_back(channel); //   EventLoop拿到poller给他返回所有发生事件的channel
+    }
+}
 void mEpollPoller::update(int operation, mChannel *channel)
 {
 #ifdef __linux__
@@ -71,6 +90,13 @@ void mEpollPoller::update(int operation, mChannel *channel)
             LOG_FATAL("epoll_ctl add、mod error:%s", strerror(errno));
         }
     }
+    if (operation == EPOll_CTL_MOD)
+        LOG_INFO("The channel fd:%d update,the operation is:EPOll_CTL_MOD", fd);
+    if (operation == EPOLL_CTL_ADD)
+        LOG_INFO("The channel fd:%d update,the operation is:EPOLL_CTL_ADD", fd);
+    if (operation == EPOLL_CTL_DEL)
+        LOG_INFO("The channel fd:%d update,the operation is:EPOLL_CTL_DEL", fd);
+
 #elif __APPLE__
     struct kevent event;
     memset(&event, 0, sizeof(event));
@@ -96,6 +122,12 @@ void mEpollPoller::update(int operation, mChannel *channel)
    */
     int fd = channel->fd();
     EV_SET(&event, fd, channel->events(), operation, 0, 0, channel);
+    if (operation == (EV_ADD | EV_ENABLE))
+        LOG_INFO("The channel fd:%d update,the operation is:EV_ADD|EV_ENABLE", fd);
+    if (operation == EV_DISABLE)
+        LOG_INFO("The channel fd:%d update,the operation is:EV_DISABLE", fd);
+    if (operation == EV_DELETE)
+        LOG_INFO("The channel fd:%d update,the operation is:EV_DELETE", fd);
 #else
     epoll_event event;
     memset(&event, 0, sizeof(event));
@@ -116,11 +148,89 @@ void mEpollPoller::update(int operation, mChannel *channel)
             LOG_FATAL("epoll_ctl add、mod error:%s", strerror(errno));
         }
     }
+    if (operation == EPOll_CTL_MOD)
+        LOG_INFO("The channel fd:%d update,the operation is:EPOll_CTL_MOD", fd);
+    if (operation == EPOLL_CTL_ADD)
+        LOG_INFO("The channel fd:%d update,the operation is:EPOLL_CTL_ADD", fd);
+    if (operation == EPOLL_CTL_DEL)
+        LOG_INFO("The channel fd:%d update,the operation is:EPOLL_CTL_DEL", fd);
 #endif
 }
 Timestamp mEpollPoller::poll(int timeoutMs, ChannelList *activeChannels)
 {
-    return std::nullptr;
+    LOG_INFO("%s => fd total count:%d", __FUNCTION__, static_cast<int>(_channels.size()));
+    int numEvents = 0;
+    int savedErrno = errno;
+    Timestamp now = Timestamp::now();
+#ifdef __linux__
+    numEvents = ::epoll_wait(_pollfd, &*events_.begin(), static_cast<int>(events_.size()), timeoutMs);
+    switch (numEvents)
+    {
+    case -1:
+        if (savedErrno != EINTR)
+        {
+            errno = savedErrno;
+            LOG_ERR("mEpollPoller::poll error!,the line:%d", __LINE__);
+        }
+        break;
+    case 0:
+        LOG_DEBUG("epoll_wait time out!");
+        break;
+    default:
+        LOG_INFO("epoll_wait listen count:%d events happedned", numEvents);
+        fillActiveChannels(numEvents, activeChannels);
+        if (numEvents == events_.size())
+            events_.resize(2 * events_.size());
+        break;
+    }
+#elif __APPLE__
+    struct timespec wait_time;
+    wait_time.tv_sec = static_cast<time_t>(timeoutMs / 1000);
+    wait_time.tv_nsec = static_cast<long>(timeoutMs % 1000);
+    numEvents = ::kevent(_pollfd, &*events_.begin(), static_cast<int>(events_.size()), NULL, 0, &wait_time);
+
+    switch (numEvents)
+    {
+    case -1:
+        if (savedErrno != EINTR)
+        {
+            errno = savedErrno;
+            LOG_ERR("mEpollPoller::poll error!,the line:%d", __LINE__);
+        }
+        break;
+    case 0:
+        LOG_DEBUG("kevent time out!");
+        break;
+    default:
+        LOG_INFO("kevent listen count:%d events happedned", numEvents);
+        fillActiveChannels(numEvents, activeChannels);
+        if (numEvents == events_.size())
+            events_.resize(2 * events_.size());
+        break;
+    }
+#else
+    numEvents = ::epoll_wait(_pollfd, &*events_.begin(), static_cast<int>(events_.size()), timeoutMs);
+    switch (numEvents)
+    {
+    case -1:
+        if (savedErrno != EINTR)
+        {
+            errno = savedErrno;
+            LOG_ERR("mEpollPoller::poll error!,the line:%d", __LINE__);
+        }
+        break;
+    case 0:
+        LOG_DEBUG("epoll_wait time out!");
+        break;
+    default:
+        LOG_INFO("epoll_wait listen count:%d events happedned", numEvents);
+        fillActiveChannels(numEvents, activeChannels);
+        if (numEvents == events_.size())
+            events_.resize(2 * events_.size());
+        break;
+    }
+#endif
+    return now;
 }
 //  channel update remove =>EventLoop updateChannel removeChannel
 void mEpollPoller::updateChannel(mChannel *channel)
@@ -134,6 +244,7 @@ void mEpollPoller::updateChannel(mChannel *channel)
         if (index == kNew)
         {
             int _curfd = fd;
+            //  _channels添加channel
             _channels.at(_curfd) = channel;
         }
         channel->setIndex(kAdded);
@@ -167,19 +278,41 @@ void mEpollPoller::updateChannel(mChannel *channel)
             update(EPOLL_CTL_MOD, channel);
 #elif __APPLE__
             //  这里需要做判断，认定为更改操作
-            update(EV_DELETE | EV_DISABLE, channel);
+            update(EV_DISABLE, channel);
 #else
-            update(EPOLL_CTL_DEL, channel);
+            update(EPOLL_CTL_MOD, channel);
 #endif
         }
     }
 }
 void mEpollPoller::removeChannel(mChannel *channel)
 {
-}
-bool mEpollPoller::hasChannel(mChannel *channel) const
-{
-    return false;
+    int fd = channel->fd();
+    LOG_INFO("%s=> fd:%d", __FUNCTION__, fd);
+    if (_channels.find(fd) == _channels.end())
+    {
+        LOG_ERR("%s=> out of range!", __FUNCTION__);
+        return;
+    }
+    if (_channels.at(fd) != channel)
+    {
+        LOG_ERR("%s=> this _channels discover the channel!", __FUNCTION__);
+        return;
+    }
+    int index = channel->index();
+    //  _channels删除channel
+    _channels.erase(fd);
+    if (index == kAdded)
+    {
+#ifdef __linux__
+        update(EPOLL_CTL_DEL, channel);
+#elif __APPLE__
+        update(EV_DELETE, channel);
+#else
+        update(EPOLL_CTL_DEL, channel);
+#endif
+    }
+    channel->setIndex(kNew);
 }
 mEpollPoller::~mEpollPoller()
 {

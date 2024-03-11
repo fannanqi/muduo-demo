@@ -2,7 +2,7 @@
  * @Author: fannanqi 1773252187@qq.com
  * @Date: 2024-03-04 17:46:48
  * @LastEditors: fannanqi 1773252187@qq.com
- * @LastEditTime: 2024-03-10 22:02:59
+ * @LastEditTime: 2024-03-11 09:16:21
  * @FilePath: /muduo-demo/net/mchannel.cc
  * @Description:
  *
@@ -89,7 +89,7 @@ void mChannel::handleEvent(Timestamp receiveTime)
 //  根据poller通知channel发生的具体事件，由channel负责调用具体的回调操作
 void mChannel::handleEventWithGuard(Timestamp receiveTime)
 {
-    LOG_INFO("channel handleEvent revents:%d", _revents);
+    LOG_INFO("%s,return event:%d", __FUNCTION__, _revents);
 #ifdef __linux__
     //  EPOLLHUP表示读和写都关闭状态, 对端读关闭
     if ((_revents & EPOLLHUP) && !(_revents & EPOLLIN))

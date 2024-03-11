@@ -2,7 +2,7 @@
  * @Author: fannanqi 1773252187@qq.com
  * @Date: 2024-03-08 08:49:47
  * @LastEditors: fannanqi 1773252187@qq.com
- * @LastEditTime: 2024-03-10 23:16:25
+ * @LastEditTime: 2024-03-11 15:45:38
  * @FilePath: /muduo-demo/net/include/mEpollPoller.h
  * @Description: 封装epoll、kqueue的行为
  */
@@ -46,7 +46,7 @@ namespace mmuduo
             //  endef   EventList
             //  epol_create句柄
             int _pollfd;
-            //
+            //  事件集合，每个event存储sockfd
             EventList events_;
             //  填写活跃的链接（！！！！！！！！！！fixing）
             void fillActiveChannels(int numEvents, ChannelList *activeChannels) const;
@@ -63,7 +63,6 @@ namespace mmuduo
             //  对应epoll_ctl
             virtual void updateChannel(mChannel *channel) override;
             virtual void removeChannel(mChannel *channel) override;
-            bool hasChannel(mChannel *channel) const;
             ~mEpollPoller();
         };
     }
