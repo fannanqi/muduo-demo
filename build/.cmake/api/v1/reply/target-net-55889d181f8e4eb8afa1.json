@@ -3,7 +3,7 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "/Users/apple/Desktop/work/muduo-demo/lib/libnet.a"
+			"path" : "/home/fannanqi/muduo-demo/lib/libnet.a"
 		}
 	],
 	"backtrace" : 1,
@@ -60,22 +60,22 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "-g -std=gnu++11 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.2.sdk"
+					"fragment" : "-std=gnu++11"
 				}
 			],
 			"includes" : 
 			[
 				{
 					"backtrace" : 4,
-					"path" : "/Users/apple/Desktop/work/muduo-demo/muduo-tool/include"
+					"path" : "/home/fannanqi/muduo-demo/muduo-tool/include"
 				},
 				{
 					"backtrace" : 4,
-					"path" : "/Users/apple/Desktop/work/muduo-demo/net/include"
+					"path" : "/home/fannanqi/muduo-demo/net/include"
 				},
 				{
 					"backtrace" : 5,
-					"path" : "/Users/apple/Desktop/work/muduo-demo/net/./include"
+					"path" : "/home/fannanqi/muduo-demo/net/./include"
 				}
 			],
 			"language" : "CXX",
