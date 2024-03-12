@@ -1,7 +1,7 @@
 set(SOURCES
     ./log/logger.cc
     ./timestamp/mTimestamp.cc
-    
+    ./mCurrentThread.cc
 )
 
 
