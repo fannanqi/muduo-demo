@@ -2,7 +2,7 @@
  * @Author: fannanqi 1773252187@qq.com
  * @Date: 2024-03-08 13:53:09
  * @LastEditors: fannanqi 1773252187@qq.com
- * @LastEditTime: 2024-03-11 16:14:43
+ * @LastEditTime: 2024-03-11 18:36:00
  * @FilePath: /muduo-demo/net/mEpollPoller.cc
  * @Description: 这里进行channnel的状态的改变，epoll_ctl、EV_SET操作
  */
@@ -42,6 +42,10 @@ mEpollPoller::mEpollPoller(mEventLoop *loop)
       _pollfd(::kqueue()),
       events_(KInitEventListSize)
 {
+    if (_pollfd < 0)
+    {
+        LOG_FATAL("epoll_create1 error:%s", ::strerror(errno));
+    }
 }
 #else
 mEpollPoller::mEpollPoller(mEventLoop *loop)
@@ -49,6 +53,10 @@ mEpollPoller::mEpollPoller(mEventLoop *loop)
       _epollfd(::epoll_create1(EPOLL_CLOEXEC)),
       events_(KInitEventListSize)
 {
+    if (_pollfd < 0)
+    {
+        LOG_FATAL("epoll_create1 error:%s", ::strerror(errno));
+    }
 }
 #endif
 void mEpollPoller::fillActiveChannels(int numEvents, ChannelList *activeChannels) const
@@ -90,7 +98,7 @@ void mEpollPoller::update(int operation, mChannel *channel)
             LOG_FATAL("epoll_ctl add、mod error:%s", strerror(errno));
         }
     }
-    if (operation == EPOll_CTL_MOD)
+    if (operation == EPOLL_CTL_MOD)
         LOG_INFO("The channel fd:%d update,the operation is:EPOll_CTL_MOD", fd);
     if (operation == EPOLL_CTL_ADD)
         LOG_INFO("The channel fd:%d update,the operation is:EPOLL_CTL_ADD", fd);
