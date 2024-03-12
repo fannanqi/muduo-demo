@@ -2,7 +2,7 @@
  * @Author: fannanqi 1773252187@qq.com
  * @Date: 2024-03-08 13:53:09
  * @LastEditors: fannanqi 1773252187@qq.com
- * @LastEditTime: 2024-03-11 16:14:43
+ * @LastEditTime: 2024-03-12 08:58:51
  * @FilePath: /muduo-demo/net/mEpollPoller.cc
  * @Description: 这里进行channnel的状态的改变，epoll_ctl、EV_SET操作
  */
@@ -188,7 +188,6 @@ Timestamp mEpollPoller::poll(int timeoutMs, ChannelList *activeChannels)
     wait_time.tv_sec = static_cast<time_t>(timeoutMs / 1000);
     wait_time.tv_nsec = static_cast<long>(timeoutMs % 1000);
     numEvents = ::kevent(_pollfd, &*events_.begin(), static_cast<int>(events_.size()), NULL, 0, &wait_time);
-
     switch (numEvents)
     {
     case -1:
