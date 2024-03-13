@@ -12,7 +12,7 @@
 						4,
 						5
 					],
-					"jsonFile" : "directory-.-f5ebdc15457944623624.json",
+					"jsonFile" : "directory-.-Debug-f5ebdc15457944623624.json",
 					"minimumCMakeVersion" : 
 					{
 						"string" : "3.15"
@@ -27,7 +27,7 @@
 						2,
 						3
 					],
-					"jsonFile" : "directory-muduo-tool-99e459f155620885ebd7.json",
+					"jsonFile" : "directory-muduo-tool-Debug-99e459f155620885ebd7.json",
 					"minimumCMakeVersion" : 
 					{
 						"string" : "3.15"
@@ -42,7 +42,7 @@
 				},
 				{
 					"build" : "muduo-tool/log",
-					"jsonFile" : "directory-muduo-tool.log-f0dfa54ee5e6c090e3a5.json",
+					"jsonFile" : "directory-muduo-tool.log-Debug-f0dfa54ee5e6c090e3a5.json",
 					"minimumCMakeVersion" : 
 					{
 						"string" : "3.15"
@@ -53,7 +53,7 @@
 				},
 				{
 					"build" : "muduo-tool/timestamp",
-					"jsonFile" : "directory-muduo-tool.timestamp-6a5cdf989fc305833112.json",
+					"jsonFile" : "directory-muduo-tool.timestamp-Debug-6a5cdf989fc305833112.json",
 					"minimumCMakeVersion" : 
 					{
 						"string" : "3.15"
@@ -64,7 +64,7 @@
 				},
 				{
 					"build" : "test",
-					"jsonFile" : "directory-test-451c0598f41488bb20b9.json",
+					"jsonFile" : "directory-test-Debug-451c0598f41488bb20b9.json",
 					"minimumCMakeVersion" : 
 					{
 						"string" : "3.15"
@@ -79,7 +79,7 @@
 				},
 				{
 					"build" : "net",
-					"jsonFile" : "directory-net-80d4081e50edbbbe24f7.json",
+					"jsonFile" : "directory-net-Debug-80d4081e50edbbbe24f7.json",
 					"minimumCMakeVersion" : 
 					{
 						"string" : "3.15"
@@ -93,7 +93,7 @@
 					]
 				}
 			],
-			"name" : "",
+			"name" : "Debug",
 			"projects" : 
 			[
 				{
@@ -120,21 +120,21 @@
 				{
 					"directoryIndex" : 1,
 					"id" : "muduo-tool::@444cf9893025182dcec9",
-					"jsonFile" : "target-muduo-tool-95a10e533988098cc336.json",
+					"jsonFile" : "target-muduo-tool-Debug-f7447fc566586b2ba842.json",
 					"name" : "muduo-tool",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 5,
 					"id" : "net::@9c2d6179807f9007d92d",
-					"jsonFile" : "target-net-55889d181f8e4eb8afa1.json",
+					"jsonFile" : "target-net-Debug-c8a498e13631593c80bf.json",
 					"name" : "net",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 4,
 					"id" : "test::@36f028580bb02cc8272a",
-					"jsonFile" : "target-test-f4114fe1a18322e747be.json",
+					"jsonFile" : "target-test-Debug-ab3ff0bac3e7aecd491b.json",
 					"name" : "test",
 					"projectIndex" : 0
 				}
@@ -144,8 +144,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "/home/fannanqi/muduo-demo/build",
-		"source" : "/home/fannanqi/muduo-demo"
+		"build" : "/Users/apple/Desktop/work/muduo-demo/build",
+		"source" : "/Users/apple/Desktop/work/muduo-demo"
 	},
 	"version" : 
 	{
